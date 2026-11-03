@@ -1,0 +1,52 @@
+{
+  "name": "upi-failover-router",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.18.2",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm --filter @upi-failover/upi-router-sdk build",
+    "typecheck": "tsc -p packages/core --noEmit && tsc -p packages/adapters --noEmit && tsc -p packages/sdk --noEmit && tsc -p apps/server --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.7",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@eslint/js": "^9.35.0",
+    "@types/node": "^20.19.11",
+    "@vitest/coverage-v8": "^3.2.4",
+    "eslint": "^9.35.0",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.6",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.43.0",
+    "vitest": "^3.2.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "light-my-request": "6.6.0"
+    },
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,mjs,cjs,json,md,yml,yaml}": [
+      "prettier --write"
+    ],
+    "*.{ts,tsx,js,mjs,cjs}": [
+      "eslint --fix"
+    ]
+  }
+}

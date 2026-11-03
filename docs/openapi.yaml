@@ -1,0 +1,82 @@
+openapi: 3.1.0
+info:
+  title: UPI Failover Router API
+  version: 0.0.0
+  summary: Phase 1 health surface
+  description: |
+    Phase 1 serves health and metrics only. Payment creation, payment reads,
+    webhooks, and the admin override are specified in PROJECT_SPEC.md and are
+    not mounted, because the server cannot yet guarantee a single capture.
+    Phase 6 replaces this file with a spec generated from the Zod schemas.
+paths:
+  /health:
+    get:
+      operationId: getHealth
+      responses:
+        '200':
+          description: Process is up
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [status]
+                properties:
+                  status:
+                    const: ok
+  /v1/health/gateways:
+    get:
+      operationId: getGatewayHealth
+      responses:
+        '200':
+          description: Per-gateway health. Empty until the health engine exists.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [gateways]
+                properties:
+                  gateways:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required: [gatewayId, method, circuit]
+                      properties:
+                        gatewayId:
+                          type: string
+                        method:
+                          type: string
+                          enum: [upi, netbanking, card, wallet]
+                        circuit:
+                          type: string
+                          enum: [CLOSED, OPEN, HALF_OPEN]
+  /metrics:
+    get:
+      operationId: getMetrics
+      responses:
+        '200':
+          description: Prometheus text exposition
+          content:
+            text/plain:
+              schema:
+                type: string
+components:
+  schemas:
+    Error:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          required: [code, message, requestId]
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            requestId:
+              type: string
