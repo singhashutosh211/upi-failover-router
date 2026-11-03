@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:26-alpine
 RUN corepack enable && corepack prepare pnpm@10.18.2 --activate
 WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc tsconfig.base.json ./
